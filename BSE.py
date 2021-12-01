@@ -857,9 +857,9 @@ class Trader_PRZI_SHC(Trader):
         self.theta0 = 100           # threshold-function limit value
         self.m = 4                  # tangent-function multiplier
         self.k = 5                  # number of hill-climbing points (cf number of arms on a multi-armed-bandit)
-        self.strat_wait_time = 50.0  # how many secs do we give any one strat before switching? todo: make this randomized withn some range
-        self.strat_range_min = 0.75 # lower-bound on randomly-assigned strategy-value
-        self.strat_range_max = 0.75 # upper-bound on randomly-assigned strategy-value
+        self.strat_wait_time = 25.0  # how many secs do we give any one strat before switching? todo: make this randomized withn some range
+        self.strat_range_min = -1.0 # lower-bound on randomly-assigned strategy-value
+        self.strat_range_max = 1.0 # upper-bound on randomly-assigned strategy-value
         self.active_strat = 1      # which of the k strategies are we currently playing? -- start with 0
         self.prev_qid = None        # previous order i.d.
         self.strat_eval_time = self.k * self.strat_wait_time   # time to cycle through evaluating all k strategies
@@ -1236,7 +1236,7 @@ class Trader_PRZI_SHC(Trader):
 
             if all_old_enough:
                 # all strategies have had long enough: which has made most profit?
-                verbose = True
+                
                 # sort them by profit
                 strats_sorted = sorted(self.strats, key = lambda k: k['pps'], reverse = True)
                 # strats_sorted = self.strats     # use this as a control: unsorts the strats, gives pure random walk.
@@ -1248,7 +1248,7 @@ class Trader_PRZI_SHC(Trader):
                         print('s=%f, start_t=%f, lifetime=%f, $=%f, pps=%f' %
                               (s['stratval'], s['start_t'], time-s['start_t'], s['profit'], s['pps']))
 
-                verbose = False
+                
                 # if the difference between the top two strats is too close to call then flip a coin
                 # this is to prevent the same good strat being held constant simply by chance cos it is at index [0]
                 prof_diff = strats_sorted[0]['profit'] - strats_sorted[1]['profit']
@@ -1982,8 +1982,8 @@ if __name__ == "__main__":
     # Use 'periodic' if you want the traders' assignments to all arrive simultaneously & periodically
     #               'interval': 30, 'timemode': 'periodic'}
 
-    buyers_spec = [('PRSH',10),('ZIP',10),('ZIC',10),('SHVR',10)]
-    sellers_spec = [('PRSH',10),('ZIP',10),('ZIC',10),('SHVR',10)]
+    buyers_spec = [('PRSH',10),('ZIP',10)]
+    sellers_spec = [('PRSH',10),('ZIP',10)]
 
     traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 
@@ -1992,7 +1992,7 @@ if __name__ == "__main__":
     verbose = True
 
     # n_trials is how many trials (i.e. market sessions) to run in total
-    n_trials = 1
+    n_trials = 25
 
     # n_recorded is how many trials (i.e. market sessions) to write full data-files for
     n_trials_recorded = 3
@@ -2017,9 +2017,9 @@ if __name__ == "__main__":
         tdump.flush()
         trial = trial + 1
 
-    plotting.profit_per_trader_plot(duration)
-    plt.show(block=True)
-    
+    #plotting.profit_per_trader_plot(duration)
+    #plt.show(block=True)
+    plotting.get_average_across_trails(len(buyers_spec), duration, n_trials)
     
     tdump.close()
 

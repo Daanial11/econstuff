@@ -151,3 +151,25 @@ def profit_per_trader_plot(duration):
 
     plt.legend()
 
+
+
+def get_average_across_trails(numTraders, duration, numTrails):
+
+    traderProfitTuples = {}
+    with open('avg_balance.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if(int(row[1]) == int(duration)):
+                for i in range(numTraders):
+                    if str(row[4 + (4*i)]) in traderProfitTuples:
+                        traderProfitTuples[str(row[4 + (4*i)])] = traderProfitTuples[str(row[4 + (4*i)])] + float(row[7 + (4*i)]) 
+                    else:
+                        traderProfitTuples[str(row[4 + (4*i)])] = float(row[7 + (4*i)]) 
+
+
+    for name, profit in traderProfitTuples.items():
+        traderProfitTuples[name] = round(profit / numTrails, 1)
+
+    print("average profit per trader over: " + str(numTrails) + " trails |" " trail duration: " + str(duration))
+    print(traderProfitTuples)  
+

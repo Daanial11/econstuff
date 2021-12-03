@@ -60,7 +60,7 @@ bse_sys_minprice = 1  # minimum price in the system, in cents/pennies
 bse_sys_maxprice = 1000  # maximum price in the system, in cents/pennies
 ticksize = 1  # minimum change in price, in cents/pennies
 
-
+global kval
 # an Order/quote has a trader id, a type (buy/sell) price, quantity, timestamp, and unique i.d.
 class Order:
 
@@ -825,13 +825,15 @@ class Trader_PRZI_SHC(Trader):
     # how to mutate the strategy values when hill-climbing
     
     def mutate_strat(self, s):
-        sdev = 0.2
+        sdev = 0.25
         
         newstrat = s
         
         while newstrat == s:
             newstrat = s - random.gauss(0.0, sdev)
             newstrat = max(-1.0, min(1.0, newstrat))
+
+        
         return newstrat
 
     def strat_str(self):
@@ -851,13 +853,13 @@ class Trader_PRZI_SHC(Trader):
         # here this is randomly assigned
         # strat * direction = -1 = > GVWY; =0 = > ZIC; =+1 = > SHVR
 
-        verbose = False
+        verbose = True
 
         Trader.__init__(self, ttype, tid, balance, time)
         self.theta0 = 100           # threshold-function limit value
         self.m = 4                  # tangent-function multiplier
-        self.k = 5                  # number of hill-climbing points (cf number of arms on a multi-armed-bandit)
-        self.strat_wait_time = 25.0  # how many secs do we give any one strat before switching? todo: make this randomized withn some range
+        self.k = kval                  # number of hill-climbing points (cf number of arms on a multi-armed-bandit)
+        self.strat_wait_time = 30 # how many secs do we give any one strat before switching? todo: make this randomized withn some range
         self.strat_range_min = -1.0 # lower-bound on randomly-assigned strategy-value
         self.strat_range_max = 1.0 # upper-bound on randomly-assigned strategy-value
         self.active_strat = 1      # which of the k strategies are we currently playing? -- start with 0
@@ -1220,6 +1222,7 @@ class Trader_PRZI_SHC(Trader):
                 self.active_strat = new_strat
                 self.last_strat_change_time = time
 
+                #verbose = True
                 if verbose:
                     print('t=%f %s PRSH respond: strat[%d] elapsed=%f; wait_t=%f, switched to strat=%d' %
                           (time, self.tid, s, time_elapsed, self.strat_wait_time, new_strat))
@@ -1823,7 +1826,7 @@ def customer_orders(time, last_update, traders, trader_stats, os, pending, verbo
 
 
 # one session in the market
-def market_session(sess_id, starttime, endtime, trader_spec, order_schedule, tdump, dump_all, verbose):
+def market_session(sess_id, starttime, endtime, trader_spec, order_schedule, tdump, dump_all, verbose, kvalue):
 
     orders_verbose = False
     lob_verbose = False
@@ -1831,7 +1834,8 @@ def market_session(sess_id, starttime, endtime, trader_spec, order_schedule, tdu
     respond_verbose = False
     bookkeep_verbose = False
     populate_verbose = False
-
+    global kval
+    kval = kvalue
     # initialise the exchange
     exchange = Exchange()
 
@@ -1937,7 +1941,7 @@ if __name__ == "__main__":
 
     # set up common parameters for all market sessions
     start_time = 0.0
-    end_time = 1200
+    end_time = 1800
     duration = end_time - start_time
 
 
@@ -1982,8 +1986,8 @@ if __name__ == "__main__":
     # Use 'periodic' if you want the traders' assignments to all arrive simultaneously & periodically
     #               'interval': 30, 'timemode': 'periodic'}
 
-    buyers_spec = [('PRSH',10),('ZIP',10)]
-    sellers_spec = [('PRSH',10),('ZIP',10)]
+    buyers_spec = [('PRSH',8),('ZIP',2)]
+    sellers_spec = [('PRSH',8),('ZIP',2)]
 
     traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 
@@ -1992,34 +1996,57 @@ if __name__ == "__main__":
     verbose = True
 
     # n_trials is how many trials (i.e. market sessions) to run in total
-    n_trials = 25
+    n_trials = 30
 
     # n_recorded is how many trials (i.e. market sessions) to write full data-files for
     n_trials_recorded = 3
 
-    tdump=open('avg_balance.csv','w')
+    
 
     trial = 1
 
-    while trial < (n_trials+1):
-        trial_id = 'sess%04d' % trial
 
-        if trial > n_trials_recorded:
-            dump_all = False
-        else:
-            dump_all = True
+    for n in range(6):
+        tdump=open('avg_balance.csv','w')
+        for i in range(n_trials):
 
-        market_session(trial_id, start_time, end_time, traders_spec, order_sched, tdump, dump_all, verbose)
+                if i > n_trials_recorded:
+                    dump_all = False
+                else:
+                    dump_all = True
 
+                market_session(str(i+1), start_time, end_time, traders_spec, order_sched, tdump, dump_all, verbose, 2+(n*2))
+                tdump.flush()
         
-        
+        plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2))  
+        tdump.close() 
 
-        tdump.flush()
-        trial = trial + 1
+    """for i in range(6):
+        while trial < (n_trials+1):
+            trial_id = 'sess%04d' % trial
+
+            if trial > n_trials_recorded:
+                dump_all = False
+            else:
+                dump_all = True
+
+            
+            for i in range(n_trials):
+                market_session(trial_id, start_time, end_time, traders_spec, order_sched, tdump, dump_all, verbose, 2+(i*2))
+            
+
+            
+            
+
+            tdump.flush()
+            trial = trial + 1
+
+        plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(i*2))
+        trail = 1   """
 
     #plotting.profit_per_trader_plot(duration)
     #plt.show(block=True)
-    plotting.get_average_across_trails(len(buyers_spec), duration, n_trials)
+    
     
     tdump.close()
 

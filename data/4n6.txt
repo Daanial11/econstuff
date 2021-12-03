@@ -1,0 +1,6 @@
+average profit per trader over: 30 trails | trail duration: 1800.0k= 2{' PRSH': 678.1, ' ZIP': 559.3} k= 2
+average profit per trader over: 30 trails | trail duration: 1800.0k= 4{' PRSH': 742.9, ' ZIP': 540.7} k= 4
+average profit per trader over: 30 trails | trail duration: 1800.0k= 6{' PRSH': 685.0, ' ZIP': 533.0} k= 6
+average profit per trader over: 30 trails | trail duration: 1800.0k= 8{' PRSH': 716.6, ' ZIP': 530.1} k= 8
+average profit per trader over: 30 trails | trail duration: 1800.0k= 10{' PRSH': 740.3, ' ZIP': 507.7} k= 10
+average profit per trader over: 30 trails | trail duration: 1800.0k= 12{' PRSH': 686.0, ' ZIP': 562.0} k= 12

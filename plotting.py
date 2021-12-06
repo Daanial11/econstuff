@@ -4,6 +4,7 @@ import random
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
+from numpy.lib.index_tricks import s_
 
 
 # Use this to plot trades of a single experiment
@@ -172,10 +173,49 @@ def get_average_across_trails(numTraders, duration, numTrails, k):
     for name, profit in traderProfitTuples.items():
         traderProfitTuples[name] = round(profit / numTrails, 1)
 
-    f = open("data/8n2.txt", "a")
+    f = open("data/s.txt", "a")
     f.write("average profit per trader over: " + str(numTrails) + " trails |" " trail duration: " + str(duration) + "k= " + str(k))
     f.write(str(traderProfitTuples) + " k= " + str(k) + "\n")
     f.close
     
-    print(traderProfitTuples)  
+    print(traderProfitTuples) 
+
+
+def plot_s():
+    
+    s_values_dict = {}
+    s_values_dict[1] = np.empty(0)
+    s_values_dict[2] = np.empty(0)
+    s_values_dict[3] = np.empty(0)
+    
+    
+    chosenSeller = None
+
+    for i in range(1):
+
+        with open(f'data/svalues{i+1}.txt', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if "S0" in str(row[0]):
+                    chosenSeller = str(row[0])
+                    print(chosenSeller)
+                    break
+                
+            reader2 = csv.reader(csvfile)        
+            for row in reader2:
+                if(str(row[0]) == chosenSeller):
+                    s_values_dict[i+1] = np.append(s_values_dict[i+1], float(row[1]))
+
+
+
+    x = list(range(len(s_values_dict[1])))
+
+    for i in range(1):
+        plt.plot(s_values_dict[i+1], 'x', label = "session: " + str(i+1))
+    
+    plt.legend()
+    plt.show(block = True)    
+
+
+
 

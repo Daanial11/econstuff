@@ -154,10 +154,10 @@ def profit_per_trader_plot(duration):
 
 
 
-def get_average_across_trails(numTraders, duration, numTrails, k):
+def get_average_across_trails(numTraders, duration, numTrails, k, filename, market):
 
     traderProfitTuples = {}
-    with open('avg_balance.csv', newline='') as csvfile:
+    with open(f'avg_balance{market}.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             if(int(row[1]) == int(duration)):
@@ -173,7 +173,7 @@ def get_average_across_trails(numTraders, duration, numTrails, k):
     for name, profit in traderProfitTuples.items():
         traderProfitTuples[name] = round(profit / numTrails, 1)
 
-    f = open("data/s.txt", "w")
+    f = open(f"data/static-market-test/jittered/{filename}.txt", "a")
     f.write("average profit per trader over: " + str(numTrails) + " trails |" " trail duration: " + str(duration) + "k= " + str(k))
     f.write(str(traderProfitTuples) + " k= " + str(k) + "\n")
     f.close

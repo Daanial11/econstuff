@@ -1278,11 +1278,11 @@ class Trader_PRZI_SHC(Trader):
                 # record it
                 curpath = os.path.abspath(os.curdir)
                 
-                
-                f = open(f'data/Con-S-test-jitt/svalues{kval}.txt', 'a', newline='')
-                writer = csv.writer(f)    
-                writer.writerow([self.tid, str(self.strats[0]['stratval'])])
-                f.close()
+                #print(kval)
+                #f = open(f'data/Con-S-test-jitt/svalues{kval}.txt', 'a', newline='')
+                #writer = csv.writer(f)    
+                #writer.writerow([self.tid, str(self.strats[0]['stratval'])])
+                #f.close()
 
                 # now replicate and mutate elite into all the other strats
                 for s in range(1, self.k):    # note range index starts at one not zero

@@ -53,8 +53,8 @@ n_trials_recorded = 3
 
 trial = 1
 
-buyers_spec = [('PRSH',5),('ZIP',5)]
-sellers_spec = [('PRSH',5),('ZIP',5)]
+buyers_spec = [('PRSH',5),('ZIP',5),('SNPR', 10),('GVWY', 10)]
+sellers_spec = [('ZIP',10),('ZIC', 10),('SNPR', 10),('GVWY', 10)]
 
 traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 
@@ -62,11 +62,11 @@ for n in range(6):
     tdump=open('avg_balance.csv','w')
     print(n)
     range1 = (50, 150)
-    supply_schedule = [{'from': start_time, 'to': float(275*(2+(n*2))*150), 'ranges': [range1], 'stepmode': 'fixed'}
+    supply_schedule = [{'from': start_time, 'to': float(43200), 'ranges': [range1], 'stepmode': 'fixed'}
                     ]
 
     range2 = (50, 150)
-    demand_schedule = [{'from': start_time, 'to': float(275*(2+(n*2))*150), 'ranges': [range2], 'stepmode': 'fixed'}
+    demand_schedule = [{'from': start_time, 'to': float(43200), 'ranges': [range2], 'stepmode': 'fixed'}
                     ]
 
     order_sched = {'sup': supply_schedule, 'dem': demand_schedule,
@@ -78,7 +78,7 @@ for n in range(6):
             else:
                 dump_all = True
 
-            market_session(str(i+1), start_time, float(275*(2+(n*2))*150), traders_spec, order_sched, tdump, dump_all, verbose, 2+(n*2))
+            market_session(str(i+1), start_time, float(43200), traders_spec, order_sched, tdump, dump_all, verbose, 2+(n*2))
             tdump.flush()
 
         

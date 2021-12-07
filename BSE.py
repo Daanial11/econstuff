@@ -1279,7 +1279,7 @@ class Trader_PRZI_SHC(Trader):
                 curpath = os.path.abspath(os.curdir)
                 
                 
-                f = open(f'data/Con-test/svalues{kval}.txt', 'a', newline='')
+                f = open(f'data/Con-S-test/svalues{kval}.txt', 'a', newline='')
                 writer = csv.writer(f)    
                 writer.writerow([self.tid, str(self.strats[0]['stratval'])])
                 f.close()

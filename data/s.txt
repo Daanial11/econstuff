@@ -31,3 +31,4 @@ average profit per trader over: 1 trails | trail duration: 90000.0k= 6{' PRSH': 
 average profit per trader over: 1 trails | trail duration: 45000.0k= 6{' PRSH': 17927.4, ' ZIP': 14567.5} k= 6
 average profit per trader over: 1 trails | trail duration: 45000.0k= 6{' PRSH': 11786.3, ' ZIP': 20153.7} k= 6
 average profit per trader over: 1 trails | trail duration: 72000.0k= 6{' PRSH': 25090.0, ' ZIP': 28958.7} k= 6
+average profit per trader over: 1 trails | trail duration: 126000.0k= 6{' PRSH': 44901.6, ' ZIP': 30438.6} k= 6

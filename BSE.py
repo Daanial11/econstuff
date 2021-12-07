@@ -861,7 +861,7 @@ class Trader_PRZI_SHC(Trader):
         self.theta0 = 100           # threshold-function limit value
         self.m = 4                  # tangent-function multiplier
         self.k = kval                  # number of hill-climbing points (cf number of arms on a multi-armed-bandit)
-        self.strat_wait_time = 30 # how many secs do we give any one strat before switching? todo: make this randomized withn some range
+        self.strat_wait_time = 275 # how many secs do we give any one strat before switching? todo: make this randomized withn some range
         self.strat_range_min = -1.0 # lower-bound on randomly-assigned strategy-value
         self.strat_range_max = 1.0 # upper-bound on randomly-assigned strategy-value
         self.active_strat = 0      # which of the k strategies are we currently playing? -- start with 0
@@ -1279,7 +1279,7 @@ class Trader_PRZI_SHC(Trader):
                 curpath = os.path.abspath(os.curdir)
                 
                 
-                f = open(f'data/svalues{trailId}.txt', 'a', newline='')
+                f = open(f'data/Con-test/svalues{kval}.txt', 'a', newline='')
                 writer = csv.writer(f)    
                 writer.writerow([self.tid, str(self.strats[0]['stratval'])])
                 f.close()
@@ -1875,7 +1875,7 @@ def market_session(sess_id, starttime, endtime, trader_spec, order_schedule, tdu
         time_left = (endtime - time) / duration
 
         # if verbose: print('\n\n%s; t=%08.2f (%4.1f/100) ' % (sess_id, time, time_left*100))
-
+        #print(time_left)
         trade = None
 
         [pending_cust_orders, kills] = customer_orders(time, last_update, traders, trader_stats,
@@ -1953,7 +1953,7 @@ if __name__ == "__main__":
     # set up common parameters for all market sessions
     #(strait-wait time * k) * advaptive steps you want
     start_time = 0.0
-    end_time = 30 * 6 * 400
+    end_time = 275 * 6 * 700
     duration = end_time - start_time
 
 
@@ -1998,8 +1998,8 @@ if __name__ == "__main__":
     # Use 'periodic' if you want the traders' assignments to all arrive simultaneously & periodically
     #               'interval': 30, 'timemode': 'periodic'}
 
-    buyers_spec = [('PRSH',5),('ZIP',5)]
-    sellers_spec = [('PRSH',5),('ZIP',5)]
+    buyers_spec = [('PRSH',1),('ZIP',5)]
+    sellers_spec = [('ZIP',6)]
 
     traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 

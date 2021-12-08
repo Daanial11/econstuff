@@ -60,13 +60,14 @@ traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 
 for n in range(6):
     tdump=open('avg_balance.csv','w')
+    duration = 275 * 100 * (2+(2*n))
     print(n)
     range1 = (50, 150)
-    supply_schedule = [{'from': start_time, 'to': float(43200), 'ranges': [range1], 'stepmode': 'jittered'}
+    supply_schedule = [{'from': start_time, 'to': duration, 'ranges': [range1], 'stepmode': 'fixed'}
                     ]
 
     range2 = (50, 150)
-    demand_schedule = [{'from': start_time, 'to': float(43200), 'ranges': [range2], 'stepmode': 'jittered'}
+    demand_schedule = [{'from': start_time, 'to': duration, 'ranges': [range2], 'stepmode': 'fixed'}
                     ]
 
     order_sched = {'sup': supply_schedule, 'dem': demand_schedule,
@@ -78,7 +79,7 @@ for n in range(6):
             else:
                 dump_all = True
 
-            market_session(str(i+1), start_time, float(43200), traders_spec, order_sched, tdump, dump_all, verbose, 2+(n*2))
+            market_session(str(i+1), start_time, duration, traders_spec, order_sched, tdump, dump_all, verbose, 2+(n*2))
             tdump.flush()
 
         

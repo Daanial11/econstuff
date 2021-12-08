@@ -63,11 +63,11 @@ for n in range(6):
     duration = 275 * 100 * (2+(2*n))
     print(n)
     range1 = (50, 150)
-    supply_schedule = [{'from': start_time, 'to': duration, 'ranges': [range1], 'stepmode': 'jittered'}
+    supply_schedule = [{'from': start_time, 'to': duration, 'ranges': [range1], 'stepmode': 'random'}
                     ]
 
     range2 = (50, 150)
-    demand_schedule = [{'from': start_time, 'to': duration, 'ranges': [range2], 'stepmode': 'jittered'}
+    demand_schedule = [{'from': start_time, 'to': duration, 'ranges': [range2], 'stepmode': 'random'}
                     ]
 
     order_sched = {'sup': supply_schedule, 'dem': demand_schedule,

@@ -53,8 +53,8 @@ n_trials_recorded = 3
 
 trial = 1
 
-buyers_spec = [('ZIP',10),('ZIC',10),('SNPR', 10),('GVWY', 10)]
-sellers_spec = [('PRSH',5),('ZIP',5),('ZIC', 10),('SNPR', 10),('GVWY', 10)]
+buyers_spec = [('PRSH',5),('ZIP',5),('ZIC',10),('SNPR', 10),('GVWY', 10)]
+sellers_spec = [('ZIP',10),('ZIC', 10),('SNPR', 10),('GVWY', 10)]
 
 traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 

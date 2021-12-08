@@ -826,7 +826,7 @@ class Trader_PRZI_SHC(Trader):
 
     # how to mutate the strategy values when hill-climbing
     
-    def mutate_strat(self, s):
+    def mutate_strat_base(self, s):
         sdev = 0.05
         
         newstrat = s
@@ -837,6 +837,34 @@ class Trader_PRZI_SHC(Trader):
 
         
         return newstrat
+
+    def mutate_strat_up_down(self, s, direction):
+        sdev = 0.1
+
+        newstrat = s
+
+        #negative direction
+        if direction == 1:
+            while newstrat == s:
+                newstrat = s - random.gauss(0.0, sdev)
+                newstrat = max(-1.0, min(1.0, newstrat))
+        #postive direction
+        else:
+            while newstrat == s:
+                newstrat = s + random.gauss(0.0, sdev)
+                newstrat = max(-1.0, min(1.0, newstrat))
+
+        return newstrat
+    
+    def mutate_strat_window(self, s, newMin, n):
+        newstrat = s
+
+        while newstrat == s:
+            newstrat = s + random.gauss(newMin, 0.5 + newMin + ((n-1)*0.5))
+            newstrat = max(-1.0, min(1.0, newstrat))
+
+        return newstrat
+
 
     def strat_str(self):
         # pretty-print a string summarising this trader's strategies
@@ -886,7 +914,7 @@ class Trader_PRZI_SHC(Trader):
                 strategy = random.uniform(self.strat_range_min, self.strat_range_max)
             else:
                 
-                strategy = self.mutate_strat(self.strats[0]['stratval'])     # mutant of strats[0]
+                strategy = self.mutate_strat_base(self.strats[0]['stratval'])     # mutant of strats[0]
             self.strats.append({'stratval': strategy, 'start_t': start_time,
                                 'profit': profit, 'pps': profit_per_second, 'lut_bid': lut_bid, 'lut_ask': lut_ask})
 
@@ -1279,14 +1307,20 @@ class Trader_PRZI_SHC(Trader):
                 curpath = os.path.abspath(os.curdir)
                 
                 
-                f = open(f'data/Con-test-rand/svalues{kval}.txt', 'a', newline='')
-                writer = csv.writer(f)    
-                writer.writerow([self.tid, str(self.strats[0]['stratval'])])
-                f.close()
+                #f = open(f'data/Con-test-rand/svalues{kval}.txt', 'a', newline='')
+                #writer = csv.writer(f)    
+                #writer.writerow([self.tid, str(self.strats[0]['stratval'])])
+                #f.close()
 
                 # now replicate and mutate elite into all the other strats
+                min = 0.0
                 for s in range(1, self.k):    # note range index starts at one not zero
-                    self.strats[s]['stratval'] = self.mutate_strat(self.strats[0]['stratval'])
+                    direction = 0
+                    if s%2 == 0:
+                        direction = 1
+                    print("direction: " + str(direction))    
+                    self.strats[s]['stratval'] = self.mutate_strat_window(self.strats[0]['stratval'], min, s)
+                    min+=0.5
                     self.strats[s]['start_t'] = time
                     self.strats[s]['profit'] = 0.0
                     self.strats[s]['pps'] = 0.0
@@ -1953,7 +1987,7 @@ if __name__ == "__main__":
     # set up common parameters for all market sessions
     #(strait-wait time * k) * advaptive steps you want
     start_time = 0.0
-    end_time = 275 * 6 * 700
+    end_time = 5000
     duration = end_time - start_time
 
 
@@ -1998,8 +2032,8 @@ if __name__ == "__main__":
     # Use 'periodic' if you want the traders' assignments to all arrive simultaneously & periodically
     #               'interval': 30, 'timemode': 'periodic'}
 
-    buyers_spec = [('PRSH',1),('ZIP',5)]
-    sellers_spec = [('ZIP',6)]
+    buyers_spec = [('PRSH',5),('ZIP',5),('ZIC',5),('SHVR',5),('GVWY',5)]
+    sellers_spec = [('PRSH',5),('ZIP',5),('ZIC',5),('SHVR',5),('GVWY',5)]
 
     traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 
@@ -2008,7 +2042,7 @@ if __name__ == "__main__":
     verbose = True
 
     # n_trials is how many trials (i.e. market sessions) to run in total
-    n_trials = 1
+    n_trials = 20
 
     # n_recorded is how many trials (i.e. market sessions) to write full data-files for
     n_trials_recorded = 3
@@ -2018,7 +2052,7 @@ if __name__ == "__main__":
     trial = 1
 
 
-    for n in range(2,3):
+    for n in range(6):
         tdump=open('avg_balance.csv','w')
         print(n)
         for i in range(n_trials):
@@ -2038,7 +2072,7 @@ if __name__ == "__main__":
         plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2))  
         tdump.close()
 
-        plotting.plot_s() 
+        #plotting.plot_s() 
 
     """for i in range(6):
         while trial < (n_trials+1):

@@ -1,0 +1,1 @@
+average profit per trader over: 20 trails | trail duration: 5000.0k= 12{' GVWY': 1599.3, ' PRSH': 1476.7, ' SHVR': 2221.3, ' ZIC': 1765.2, ' ZIP': 2124.9} k= 12

@@ -1,0 +1,6 @@
+average profit per trader over: 20 trails | trail duration: 5000.0k= 2{' GVWY': 2999.1, ' PRSH': 2245.0, ' SNPR': 621.8, ' ZIC': 2805.9, ' ZIP': 3377.8} k= 2
+average profit per trader over: 20 trails | trail duration: 5000.0k= 4{' GVWY': 2760.2, ' PRSH': 2301.5, ' SNPR': 640.7, ' ZIC': 2646.9, ' ZIP': 3707.4} k= 4
+average profit per trader over: 20 trails | trail duration: 5000.0k= 6{' GVWY': 2927.9, ' PRSH': 2371.0, ' SNPR': 612.6, ' ZIC': 2884.3, ' ZIP': 3384.0} k= 6
+average profit per trader over: 20 trails | trail duration: 5000.0k= 8{' GVWY': 2710.6, ' PRSH': 2215.9, ' SNPR': 658.2, ' ZIC': 2725.8, ' ZIP': 3546.2} k= 8
+average profit per trader over: 20 trails | trail duration: 5000.0k= 10{' GVWY': 2719.7, ' PRSH': 2227.6, ' SNPR': 661.1, ' ZIC': 2761.3, ' ZIP': 3539.6} k= 10
+average profit per trader over: 20 trails | trail duration: 5000.0k= 12{' GVWY': 2795.7, ' PRSH': 2206.5, ' SNPR': 661.9, ' ZIC': 2785.4, ' ZIP': 3530.3} k= 12

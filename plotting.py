@@ -173,7 +173,7 @@ def get_average_across_trails(numTraders, duration, numTrails, k, filename, mark
     for name, profit in traderProfitTuples.items():
         traderProfitTuples[name] = round(profit / numTrails, 1)
 
-    f = open(f"data/static-market-test/fixed/{filename}.txt", "a")
+    f = open(f"data/static-market-test/random/{filename}.txt", "a")
     f.write("average profit per trader over: " + str(numTrails) + " trails |" " trail duration: " + str(duration) + "k= " + str(k))
     f.write(str(traderProfitTuples) + " k= " + str(k) + "\n")
     f.close

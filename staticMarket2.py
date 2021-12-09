@@ -61,7 +61,7 @@ traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 for n in range(6):
     duration = float(5000)
     k = 2+(n*2)
-    stepMode = 'random'
+    stepMode = 'jittered'
     tdump=open(f'data/static-market-test/{stepMode}/avg_balanceM2k{k}.csv','w')
     print(n)
     range1 = (130, 175)

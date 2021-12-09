@@ -62,13 +62,13 @@ for n in range(6):
     duration = float(5000)
     k = 2+(n*2)
     stepMode = 'random'
-    tdump=open(f'data/static-market-test/{stepMode}/avg_balanceM2k{k}.csv','w')
+    tdump=open(f'data/static-market-test/{stepMode}/avg_balanceM4k{k}.csv','w')
     print(n)
-    range1 = (130, 175)
+    range1 = (200, 300)
     supply_schedule = [{'from': start_time, 'to': duration, 'ranges': [range1], 'stepmode': stepMode}
                     ]
 
-    range2 = (75, 200)
+    range2 = (200, 300)
     demand_schedule = [{'from': start_time, 'to': duration, 'ranges': [range2], 'stepmode': stepMode}
                     ]
 
@@ -86,5 +86,5 @@ for n in range(6):
 
         
 
-    #plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2), "M2", 2)      
+    #plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2), "M4", 3)      
     tdump.close()

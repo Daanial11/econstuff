@@ -53,21 +53,23 @@ n_trials_recorded = 3
 
 trial = 1
 
-buyers_spec = [('PRSH',10), ('ZIP',10),('ZIC',10),('SNPR', 10),('GVWY', 10)]
-sellers_spec = [('PRSH',10),('ZIP',10),('ZIC', 10),('SNPR', 10),('GVWY', 10)]
+buyers_spec = [('PRSH',5), ('ZIP',5),('ZIC',5),('SNPR', 5),('GVWY', 5)]
+sellers_spec = [('PRSH',5),('ZIP',5),('ZIC', 5),('SNPR', 5),('GVWY', 5)]
 
 traders_spec = {'sellers':sellers_spec, 'buyers':buyers_spec}
 
 for n in range(6):
     duration = float(5000)
-    tdump=open('avg_balance3.csv','w')
+    k = 2+(n*2)
+    stepMode = 'random'
+    tdump=open(f'data/static-market-test/{stepMode}/avg_balanceM3k{k}.csv','w')
     print(n)
     range1 = (75, 200)
-    supply_schedule = [{'from': start_time, 'to': duration, 'ranges': [range1], 'stepmode': 'random'}
+    supply_schedule = [{'from': start_time, 'to': duration, 'ranges': [range1], 'stepmode': stepMode}
                     ]
 
-    range2 = (130, 200)
-    demand_schedule = [{'from': start_time, 'to': duration, 'ranges': [range2], 'stepmode': 'random'}
+    range2 = (130, 175)
+    demand_schedule = [{'from': start_time, 'to': duration, 'ranges': [range2], 'stepmode': stepMode}
                     ]
 
     order_sched = {'sup': supply_schedule, 'dem': demand_schedule,
@@ -84,5 +86,5 @@ for n in range(6):
 
         
 
-    plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2), "M3", 3)      
+    #plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2), "M3", 3)      
     tdump.close()

@@ -839,7 +839,7 @@ class Trader_PRZI_SHC(Trader):
         return newstrat
 
     def mutate_strat_up_down(self, s, direction):
-        sdev = 0.1
+        sdev = 0.05
 
         newstrat = s
 

@@ -1319,7 +1319,7 @@ class Trader_PRZI_SHC(Trader):
                     if s%2 == 0:
                         direction = 1
                     print("direction: " + str(direction))    
-                    self.strats[s]['stratval'] = self.mutate_strat_window(self.strats[0]['stratval'], min, s)
+                    self.strats[s]['stratval'] = self.mutate_strat_up_down(self.strats[0]['stratval'], direction)
                     min+=0.5
                     self.strats[s]['start_t'] = time
                     self.strats[s]['profit'] = 0.0
@@ -2053,7 +2053,8 @@ if __name__ == "__main__":
 
 
     for n in range(6):
-        tdump=open('avg_balance.csv','w')
+        k = 2 + (n*2) 
+        tdump=open(f'data/mutateUpDown/avg_balance{k}.csv','w')
         print(n)
         for i in range(n_trials):
 
@@ -2069,7 +2070,7 @@ if __name__ == "__main__":
 
           
         
-        plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2))  
+        #plotting.get_average_across_trails(len(buyers_spec), duration, n_trials, 2+(n*2))  
         tdump.close()
 
         #plotting.plot_s() 
